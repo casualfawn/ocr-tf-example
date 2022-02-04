@@ -1,0 +1,29 @@
+
+
+
+#- crontab
+#---  task for displaying and recording database update times
+
+while true; do cat /home/username/Project Folder/logs/database_upload.log; date; echo 'Project Folder database upload'; stat -c ‘%y’ /home/username/Project Folder/logs/database_upload.log; sleep 120; done
+
+
+#---  task for displaying and recording actual predictions every 2 minutes
+
+while true; do cat /home/username/Project Folder/logs/digitspredict.log; date; echo 'Project Value Classifications'; stat -c ‘%y’ /home/username/Project Folder/logs/digitspredict.log; sleep 120; done
+
+
+#------- gpu check ports and usage
+
+nvida-smi | -1
+
+
+#--- Wrangle Data and Update NoSQL Database predicted digits.
+
+Rscript /home/username/Project Folder/Scheduled Tasks/Upload_to_DB_Example.R >>/home/username/Project Folder/logs/database_upload.log 2>&1
+
+
+
+#--- task for sending text message alerts based on digit values and saving data.
+
+Rscript /home/username/Project Folder/togglefortextalerts.R >>/home/username/Project Folder/logs/textalerts.log 2>&1
+
